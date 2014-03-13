@@ -14,8 +14,9 @@ module Rainbow
       x_coverred = 0
 
       ranges.each_with_index do |range, index|
-        range.x_coverred  = x_coverred
+        range.x_coverred = x_coverred
 
+        # When the first color location is not 0
         if index == 0
           range.start_location_in_pixel.times do |x|
             height.times { |y| @canvas[x, y] = range.from_color.color }
@@ -29,6 +30,7 @@ module Rainbow
         end
         x_coverred += range.distance_in_pixel
 
+        # When the last color location is not 100
         if index + 1 == ranges.size
           range.end_location_in_pixel.times do |x|
             height.times { |y| @canvas[x + x_coverred, y] = range.to_color.color }
