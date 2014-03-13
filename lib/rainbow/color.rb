@@ -5,7 +5,7 @@ module Rainbow
     # color     - Fixnum
     # location  - Fixnum (in percentage)
     # mid_point - Fixnum (in percentage)
-    def initialize(color, location, mid_point = nil)
+    def initialize(color, location, mid_point = 50)
       @color     = color
       @location  = location
       @mid_point = mid_point

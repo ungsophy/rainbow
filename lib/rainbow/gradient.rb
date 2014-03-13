@@ -16,9 +16,24 @@ module Rainbow
       ranges.each_with_index do |range, index|
         range.x_coverred  = x_coverred
 
+        if index == 0
+          range.start_location_in_pixel.times do |x|
+            height.times { |y| @canvas[x, y] = range.from_color.color }
+          end
+          x_coverred += range.start_location_in_pixel
+        end
+
         range.distance_in_pixel.times do |x|
           range.current_x = x
-          height.times { |y| @canvas[x_coverred + x, y] = range.current_color }
+          height.times { |y| @canvas[x + x_coverred, y] = range.current_color }
+        end
+        x_coverred += range.distance_in_pixel
+
+        if index + 1 == ranges.size
+          range.end_location_in_pixel.times do |x|
+            height.times { |y| @canvas[x + x_coverred, y] = range.to_color.color }
+          end
+          x_coverred += range.end_location_in_pixel
         end
       end
     end

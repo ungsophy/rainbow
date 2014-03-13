@@ -3,6 +3,7 @@ module Rainbow
 
     attr_reader :from_color, :to_color, :mid_point, :mid_color, :gradient_width
     attr_reader :distance_in_pixel, :first_half_distance, :second_half_distance
+    attr_reader :start_location_in_pixel, :end_location_in_pixel
 
     attr_reader :tmp_diff_r, :tmp_diff_g, :tmp_diff_b
     attr_reader :tmp_current_x, :tmp_diff_r, :tmp_diff_g, :tmp_diff_b, :tmp_from_color, :tmp_to_color, :tmp_distance_in_pixel
@@ -28,6 +29,9 @@ module Rainbow
       @distance_in_pixel     = @gradient_width * (to_color.location - from_color.location) / 100
       @first_half_distance   = @distance_in_pixel * @mid_point / 100
       @second_half_distance  = @distance_in_pixel - @first_half_distance
+
+      @start_location_in_pixel = from_color.location * gradient_width / 100
+      @end_location_in_pixel   = (100 - to_color.location) * gradient_width / 100
     end
 
     def current_x=(x)
