@@ -1,16 +1,14 @@
 module Rainbow
   class Color
-    attr_reader :color, :location, :mid_point
+    attr_reader :color, :location, :opacity
 
-    # color     - Fixnum
-    # location  - Fixnum (in percentage)
-    # mid_point - Fixnum (in percentage)
-    def initialize(color, location, mid_point = 50)
-      @color     = color
-      @location  = location
-      @mid_point = mid_point
-
-      assert_mid_point!
+    # color    - Fixnum
+    # location - Rainbow::Color::Location
+    # opacity  - Rainbow::Color::Opacity
+    def initialize(color, location, opacity)
+      @color    = color
+      @location = location
+      @opacity  = opacity
     end
 
     def r
@@ -25,12 +23,9 @@ module Rainbow
       ChunkyPNG::Color.b(color)
     end
 
-    private
-
-      def assert_mid_point!
-        if !mid_point.nil? && (mid_point < 5 || mid_point > 95)
-          raise ArgumentError, 'mid_point must be between 5 and 95'
-        end
-      end
+    %w(location opacity).each do |attribute|
+      define_method("#{attribute}_value")     { __send__(attribute).value }
+      define_method("#{attribute}_mid_point") { __send__(attribute).mid_point }
+    end
   end
 end
