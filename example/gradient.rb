@@ -13,8 +13,11 @@ colors = []
 # colors << Rainbow::Color.new(ChunkyPNG::Color(0, 0, 255), 0)
 # colors << Rainbow::Color.new(ChunkyPNG::Color(255, 255, 255), 60)
 
-colors << Rainbow::Color.new(ChunkyPNG::Color(0, 0, 255), 25)
-colors << Rainbow::Color.new(ChunkyPNG::Color(255, 255, 255), 85)
+# colors << Rainbow::Color.new(ChunkyPNG::Color(0, 0, 255), 55)
+# colors << Rainbow::Color.new(ChunkyPNG::Color(255, 255, 255), 75)
+
+colors << Rainbow::Color.new(ChunkyPNG::Color(255, 255, 255), 0, 90)
+colors << Rainbow::Color.new(ChunkyPNG::Color(0, 0, 0), 100)
 
 filename = './example/gradient.png'
 gradient = Rainbow::Gradient.new(colors, 400, 30)

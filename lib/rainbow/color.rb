@@ -2,7 +2,10 @@ module Rainbow
   class Color
     attr_reader :color, :location, :mid_point
 
-    def initialize(color, location = nil, mid_point = 50)
+    # color     - Fixnum
+    # location  - Fixnum (in percentage)
+    # mid_point - Fixnum (in percentage)
+    def initialize(color, location, mid_point = nil)
       @color     = color
       @location  = location
       @mid_point = mid_point
@@ -25,7 +28,9 @@ module Rainbow
     private
 
       def assert_mid_point!
-        raise ArgumentError, 'mid_point must be between 0 and 100' if mid_point < 0 || mid_point > 100
+        if !mid_point.nil? && (mid_point < 5 || mid_point > 95)
+          raise ArgumentError, 'mid_point must be between 5 and 95'
+        end
       end
   end
 end

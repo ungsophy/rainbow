@@ -10,34 +10,15 @@ module Rainbow
     end
 
     def generate
-      @canvas = ChunkyPNG::Canvas.new(width, height)
+      @canvas    = ChunkyPNG::Canvas.new(width, height, ChunkyPNG::Color::TRANSPARENT)
       x_coverred = 0
 
       ranges.each_with_index do |range, index|
-        range.width             = width
-        range.x_coverred        = x_coverred
-        distance_in_pixel       = range.distance_in_pixel
-        start_location_in_pixel = range.start_location_in_pixel
+        range.x_coverred  = x_coverred
 
-        # The start area
-        if index == 0 && start_location_in_pixel > 0
-          start_location_in_pixel.times do |x|
-            height.times { |y| @canvas[x, y] = range.from_color.color }
-          end
-          x_coverred = start_location_in_pixel
-        end
-
-        distance_in_pixel.times do |x|
+        range.distance_in_pixel.times do |x|
           range.current_x = x
           height.times { |y| @canvas[x_coverred + x, y] = range.current_color }
-        end
-        x_coverred += distance_in_pixel
-
-        # The end area
-        if ranges.size - 1 == index
-          range.distance_to_go_in_pixel.times do |x|
-            height.times { |y| @canvas[x_coverred + x, y] = range.to_color.color }
-          end
         end
       end
     end
@@ -56,7 +37,9 @@ module Rainbow
           to_color = colors[index + 1]
           break ranges unless to_color
 
-          ranges << Rainbow::ColorRange.new(from_color, to_color)
+          range = Rainbow::ColorRange.new(from_color, to_color, width)
+          ranges << range
+
           ranges
         end
       end
