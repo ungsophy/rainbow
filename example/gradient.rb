@@ -20,14 +20,15 @@ colors = []
 # colors << Rainbow::Color.new(ChunkyPNG::Color(255, 255, 255),  50, 10)
 # colors << Rainbow::Color.new(ChunkyPNG::Color(  0,   0,   0),  70)
 
+# color_int = ChunkyPNG::Color(255, 0, 0)
 color_int = ChunkyPNG::Color(0, 0, 255)
 location  = Rainbow::Color::Location.new(0, 50)
-opacity   = Rainbow::Color::Opacity.new(100, 50)
+opacity   = Rainbow::Color::Opacity.new(20, 50)
 colors << Rainbow::Color.new(color_int, location, opacity)
 
-color_int = ChunkyPNG::Color(255, 0, 0)
+color_int = ChunkyPNG::Color(0, 0, 0)
 location  = Rainbow::Color::Location.new(100, 50)
-opacity   = Rainbow::Color::Opacity.new(100, 50)
+opacity   = Rainbow::Color::Opacity.new(70, 50)
 colors << Rainbow::Color.new(color_int, location, opacity)
 
 filename = './example/gradient.png'

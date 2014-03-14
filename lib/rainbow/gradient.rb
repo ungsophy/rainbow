@@ -14,7 +14,6 @@ module Rainbow
       x_coverred = 0
 
       ranges.each_with_index do |range, index|
-        range.x_coverred = x_coverred
 
         # When the first color location is not 0
         if index == 0
