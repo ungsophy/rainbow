@@ -1,18 +1,20 @@
 require './lib/rainbow'
 
-colors = []
+first_color  = Rainbow::Color.new(ChunkyPNG::Color(0, 0, 255), 0)
+second_color = Rainbow::Color.new(ChunkyPNG::Color(255, 0, 0), 100)
+# third_color  = Rainbow::Color.new(ChunkyPNG::Color(0, 255, 0), 100)
 
-color_int        = ChunkyPNG::Color(4, 4, 138)
-color_location   = Rainbow::Color::ColorLocation.new(0)
-opacity_location = Rainbow::Color::OpacityLocation.new(0)
-colors << Rainbow::Color.new(color_int, 90, color_location, opacity_location)
+color_range1 = Rainbow::ColorRange.new(first_color, second_color, 50)
+# color_range2 = Rainbow::ColorRange.new(second_color, third_color, 75)
 
-color_int        = ChunkyPNG::Color(4, 4, 138)
-color_location   = Rainbow::Color::ColorLocation.new(100)
-opacity_location = Rainbow::Color::OpacityLocation.new(100)
-colors << Rainbow::Color.new(color_int, 60, color_location, opacity_location)
+first_opacity  = Rainbow::Opacity.new(70, 0)
+second_opacity = Rainbow::Opacity.new(35, 100)
+# third_opacity  = Rainbow::Opacity.new(30, 100)
+
+opacity_range1 = Rainbow::OpacityRange.new(first_opacity, second_opacity, 50)
+# opacity_range2 = Rainbow::OpacityRange.new(second_opacity, third_opacity, 80)
 
 filename = './example/gradient.png'
-gradient = Rainbow::Gradient.new(colors, 400, 30)
+gradient = Rainbow::Gradient.new(400, 50, [color_range1], [opacity_range1])
 gradient.save_as_png(filename)
 `open #{filename}`
