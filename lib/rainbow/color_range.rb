@@ -1,10 +1,9 @@
 module Rainbow
   class ColorRange
     attr_reader :from_color, :to_color, :mid_point, :gradient, :mid_color
-    attr_reader :distance_in_pixel, :color_first_half_distance, :color_second_half_distance
-    attr_reader :start_location_in_pixel, :end_location_in_pixel
-    attr_reader :tmp_current_x, :tmp_diff_r, :tmp_diff_g, :tmp_diff_b,
-                :tmp_from_color, :tmp_to_color, :tmp_distance_in_pixel
+    attr_reader :width, :first_width, :second_width
+    attr_reader :from_location_in_pixel, :to_location_in_pixel, :mid_location_in_pixel, :leftover_width
+    attr_reader :tmp_current_x, :tmp_diff_r, :tmp_diff_g, :tmp_diff_b, :tmp_from_color, :tmp_to_color, :tmp_distance_in_pixel
 
     attr_accessor :opacity_ranges
 
@@ -16,7 +15,7 @@ module Rainbow
 
     def gradient=(gradient)
       @gradient = gradient
-      init_variables
+      compute_variables
     end
 
     def current_x=(x)
@@ -42,18 +41,20 @@ module Rainbow
         (@tmp_opacity_from + ratio * @tmp_opacity_diff).round
       end
 
-      def init_variables
+      def compute_variables
         @mid_color = ChunkyPNG::Color(from_color.r + (to_color.r - from_color.r) / 2,
                                       from_color.g + (to_color.g - from_color.g) / 2,
                                       from_color.b + (to_color.b - from_color.b) / 2)
 
-        @distance_in_pixel = gradient.width * (to_color.location - from_color.location) / 100
+        @width        = gradient.width * (to_color.location - from_color.location) / 100
+        @first_width  = @width * mid_point / 100
+        @second_width = @width - @first_width
 
-        @color_first_half_distance = @distance_in_pixel * mid_point / 100
-        @color_second_half_distance = @distance_in_pixel - @color_first_half_distance
+        @from_location_in_pixel = from_color.location * gradient.width / 100
+        @mid_location_in_pixel  = @from_location_in_pixel + @first_width
+        @to_location_in_pixel   = @from_location_in_pixel + @width
 
-        @start_location_in_pixel = from_color.location * gradient.width / 100
-        @end_location_in_pixel = (100 - to_color.location) * gradient.width / 100
+        @leftover_width = (100 - to_color.location) * gradient.width / 100
       end
 
       def set_opacity_variables(x)
@@ -67,22 +68,38 @@ module Rainbow
       end
 
       def set_color_variables(x)
-        if x == 0
+        if x == 0 && from_color.location > 0
+          @tmp_current_x         = 0.0
+          @tmp_from_color        = from_color
+          @tmp_to_color          = from_color
+          @tmp_distance_in_pixel = from_location_in_pixel
+          @tmp_diff_r            = 0
+          @tmp_diff_g            = 0
+          @tmp_diff_b            = 0
+        elsif x == from_location_in_pixel
           @tmp_current_x         = 0.0
           @tmp_from_color        = from_color
           @tmp_to_color          = Rainbow::Color.new(mid_color, 0)
-          @tmp_distance_in_pixel = color_first_half_distance
+          @tmp_distance_in_pixel = first_width
           @tmp_diff_r            = @tmp_to_color.r - @tmp_from_color.r
           @tmp_diff_g            = @tmp_to_color.g - @tmp_from_color.g
           @tmp_diff_b            = @tmp_to_color.b - @tmp_from_color.b
-        elsif x == color_first_half_distance
+        elsif x == mid_location_in_pixel
           @tmp_current_x         = 0.0
           @tmp_from_color        = Rainbow::Color.new(mid_color, 0)
           @tmp_to_color          = to_color
-          @tmp_distance_in_pixel = color_second_half_distance
+          @tmp_distance_in_pixel = second_width
           @tmp_diff_r            = @tmp_to_color.r - @tmp_from_color.r
           @tmp_diff_g            = @tmp_to_color.g - @tmp_from_color.g
           @tmp_diff_b            = @tmp_to_color.b - @tmp_from_color.b
+        elsif x == to_location_in_pixel && to_color.location < 100
+          @tmp_current_x         = 0.0
+          @tmp_from_color        = to_color
+          @tmp_to_color          = to_color
+          @tmp_distance_in_pixel = leftover_width
+          @tmp_diff_r            = 0
+          @tmp_diff_g            = 0
+          @tmp_diff_b            = 0
         else
           @tmp_current_x += 1
         end

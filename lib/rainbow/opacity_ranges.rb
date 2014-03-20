@@ -22,7 +22,19 @@ module Rainbow
         # since x is started at 0
         x += 1
 
-        ranges.each { |range| break range if range.included?(x) }
+        range = ranges.find { |range| range.included?(x) }
+        return range if range
+
+        first_range = ranges.first
+        last_range  = ranges.last
+
+        if first_range.from_opacity.location > 0 && first_range.from_location_in_pixel > x
+          ranges.first
+        elsif last_range.to_opacity.location < 100 && x > last_range.to_location_in_pixel
+          ranges.last
+        else
+          raise "Cannot find current opacity range! .(#{first_range.from_location_in_pixel} - #{last_range.to_location_in_pixel}); (#{x})"
+        end
       end
   end
 end
