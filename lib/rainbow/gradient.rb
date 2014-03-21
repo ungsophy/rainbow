@@ -35,6 +35,14 @@ module Rainbow
       assert_arguments!
     end
 
+    def create_canvas
+      @canvas = ChunkyPNG::Canvas.new(width, height, ChunkyPNG::Color::TRANSPARENT)
+
+      paint_canvas!(@canvas)
+      set_opacity!(@canvas) if opacity != 100
+      reverse!(@canvas) if reverse
+    end
+
     def blend_mode
       args.fetch(:blend_mode, 'norm')
     end
@@ -71,13 +79,6 @@ module Rainbow
       args.fetch(:scale, 100)
     end
 
-    def create_canvas
-      @canvas = ChunkyPNG::Canvas.new(width, height, ChunkyPNG::Color::TRANSPARENT)
-
-      paint_canvas!(@canvas)
-      set_opacity!(@canvas) if opacity != 100
-    end
-
     def save_as_png(path)
       create_canvas unless canvas
       canvas.save(path, :fast_rgba)
@@ -93,6 +94,10 @@ module Rainbow
         raise ArgumentError, 'args[:gradient][:color_ranges] cannot not be blank' if !color_ranges || color_ranges.size == 0
         raise ArgumentError, 'args[:gradient][:opacity_ranges] cannot not be blank' if !_opacity_ranges || _opacity_ranges.size == 0
         raise ArgumentError, 'args[:style] cannot not be blank' unless args[:style]
+      end
+
+      def reverse!(canvas)
+        canvas.flip_vertically!
       end
 
       def set_opacity!(canvas)

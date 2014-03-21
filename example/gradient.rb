@@ -10,6 +10,7 @@ opacity_range  = Rainbow::OpacityRange.new(first_opacity, second_opacity, 50)
 
 filename = './example/output/gradient.png'
 args = {
+  reverse: true,
   opacity: 80,
   style: 'linear',
   gradient: {
