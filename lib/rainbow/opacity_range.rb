@@ -10,7 +10,7 @@ module Rainbow
       @to_opacity   = to_opacity
       @mid_point    = mid_point
 
-      @mid_opacity = from_opacity.value + (to_opacity.value - from_opacity.value) / 2
+      @mid_opacity  = from_opacity.value + (to_opacity.value - from_opacity.value) / 2
     end
 
     def included?(x)
@@ -63,7 +63,7 @@ module Rainbow
         @mid_location_in_pixel  = @from_location_in_pixel + @first_width
         @to_location_in_pixel   = @from_location_in_pixel + @width
 
-        @leftover_width         = (100 - to_opacity.location) * gradient.width / 100
+        @leftover_width = (100 - to_opacity.location) * gradient.width / 100
       end
   end
 end

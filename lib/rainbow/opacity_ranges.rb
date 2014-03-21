@@ -6,8 +6,9 @@ module Rainbow
     def_delegators :@current_range, :tmp_current_x, :tmp_from, :tmp_to, :tmp_diff, :tmp_distance_in_pixel
 
     def initialize(opacity_ranges, gradient)
-      @ranges   = Array(opacity_ranges)
+      @ranges   = opacity_ranges
       @gradient = gradient
+
       @ranges.each { |range| range.gradient = gradient }
     end
 

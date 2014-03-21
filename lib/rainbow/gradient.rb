@@ -7,7 +7,7 @@ module Rainbow
     def initialize(width, height, color_ranges, opacity_ranges)
       @width          = width
       @height         = height
-      @color_ranges   = Array(color_ranges)
+      @color_ranges   = color_ranges
       @opacity_ranges = OpacityRanges.new(opacity_ranges, self)
     end
 

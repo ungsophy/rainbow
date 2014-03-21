@@ -28,10 +28,7 @@ module GradientFactory
       end
 
       gradient = Rainbow::Gradient.new(400, 50, color_ranges, opacity_ranges)
-      filename = OUTPUT_DIR.join("#{filename}.png")
-      gradient.save_as_png(filename)
-
-      filenames << filename
+      filenames << gradient.save_as_png(OUTPUT_DIR.join("#{filename}.png"))
     end
   end
 end
