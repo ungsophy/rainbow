@@ -23,7 +23,7 @@ module Rainbow
         # since x is started at 0
         x += 1
 
-        range = ranges.find { |range| range.included?(x) }
+        range = ranges.find { |r| r.included?(x) }
         return range if range
 
         first_range = ranges.first

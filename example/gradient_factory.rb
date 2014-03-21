@@ -27,7 +27,15 @@ module GradientFactory
         ranges << Rainbow::OpacityRange.new(opacity1, opacity2, data['mid_point'])
       end
 
-      gradient = Rainbow::Gradient.new(400, 50, color_ranges, opacity_ranges)
+      args = {
+        style: 'linear',
+        gradient: {
+          color_ranges: color_ranges,
+          opacity_ranges: opacity_ranges
+        }
+      }
+
+      gradient = Rainbow::Gradient.new(400, 50, args)
       filenames << gradient.save_as_png(OUTPUT_DIR.join("#{filename}.png"))
     end
   end
