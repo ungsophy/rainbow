@@ -28,6 +28,7 @@ module GradientFactory
       end
 
       args = {
+        reverse: value['reverse'],
         style: 'linear',
         gradient: {
           color_ranges: color_ranges,

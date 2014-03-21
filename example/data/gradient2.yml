@@ -1,4 +1,5 @@
 gradient2_1:
+  reverse: true
   color_ranges:
     -
       color1:
@@ -23,6 +24,7 @@ gradient2_1:
       mid_point: 50
 
 gradient2_2:
+  reverse: false
   color_ranges:
     -
       color1:
@@ -47,6 +49,7 @@ gradient2_2:
       mid_point: 50
 
 gradient2_3:
+  reverse: false
   color_ranges:
     -
       color1:
