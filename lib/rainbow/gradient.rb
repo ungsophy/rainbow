@@ -71,26 +71,15 @@ module Rainbow
       args.fetch(:scale, 100)
     end
 
-    def generate
-      @canvas    = ChunkyPNG::Canvas.new(width, height, ChunkyPNG::Color::TRANSPARENT)
-      x_coverred = 0
+    def create_canvas
+      @canvas = ChunkyPNG::Canvas.new(width, height, ChunkyPNG::Color::TRANSPARENT)
 
-      color_ranges.each_with_index do |color_range, index|
-        color_range.gradient       = self
-        color_range.opacity_ranges = opacity_ranges
-
-        # When the first color location is not 0
-        x_coverred += paint_prefix(@canvas, color_range, x_coverred) if index == 0
-
-        x_coverred += paint_body(@canvas, color_range, x_coverred)
-
-        # When the last color location is not 100
-        x_coverred += paint_suffix(@canvas, color_range, x_coverred) if index + 1 == color_ranges.size
-      end
+      paint_canvas!(@canvas)
+      set_opacity!(@canvas) if opacity != 100
     end
 
     def save_as_png(path)
-      generate unless canvas
+      create_canvas unless canvas
       canvas.save(path, :fast_rgba)
 
       path
@@ -104,6 +93,35 @@ module Rainbow
         raise ArgumentError, 'args[:gradient][:color_ranges] cannot not be blank' if !color_ranges || color_ranges.size == 0
         raise ArgumentError, 'args[:gradient][:opacity_ranges] cannot not be blank' if !_opacity_ranges || _opacity_ranges.size == 0
         raise ArgumentError, 'args[:style] cannot not be blank' unless args[:style]
+      end
+
+      def set_opacity!(canvas)
+        width.times.each do |x|
+          height.times.each do |y|
+            color        = canvas[x, y]
+            red          = ChunkyPNG::Color.r(color)
+            green        = ChunkyPNG::Color.g(color)
+            blue         = ChunkyPNG::Color.b(color)
+            new_alpha    = ChunkyPNG::Color.a(color) * opacity / 100
+            canvas[x, y] = ChunkyPNG::Color.rgba(red, green, blue, new_alpha)
+          end
+        end
+      end
+
+      def paint_canvas!(canvas)
+        x_coverred = 0
+        color_ranges.each_with_index do |color_range, index|
+          color_range.gradient       = self
+          color_range.opacity_ranges = opacity_ranges
+
+          # When the first color location is not 0
+          x_coverred += paint_prefix(canvas, color_range, x_coverred) if index == 0
+
+          x_coverred += paint_body(canvas, color_range, x_coverred)
+
+          # When the last color location is not 100
+          x_coverred += paint_suffix(canvas, color_range, x_coverred) if index + 1 == color_ranges.size
+        end
       end
 
       def paint_prefix(canvas, color_range, x_coverred)
