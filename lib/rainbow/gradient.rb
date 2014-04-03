@@ -3,6 +3,8 @@ module Rainbow
 
     attr_reader :width, :height, :args, :style, :color_ranges, :opacity_ranges
     attr_reader :canvas
+    attr_reader :scale_start_location_in_pixel, :scale_mid_location_in_pixel, :scale_end_location_in_pixel,
+      :scale_half_distance_in_pixel
 
     # wdith  - The gradient width
     # height - The gradient height
@@ -33,6 +35,14 @@ module Rainbow
       @opacity_ranges = OpacityRanges.new(args[:gradient][:opacity_ranges], self)
 
       assert_arguments!
+
+      scale_start = (100 - scale) / 2
+      scale_end   = scale_start == 0 ? 100 : scale_start + scale
+
+      @scale_start_location_in_pixel = scale_start * width / 100
+      @scale_end_location_in_pixel   = scale_end * width / 100
+      @scale_half_distance_in_pixel  = (@scale_end_location_in_pixel - @scale_start_location_in_pixel) / 2
+      @scale_mid_location_in_pixel   = @scale_start_location_in_pixel + @scale_half_distance_in_pixel
     end
 
     def create_canvas
@@ -79,6 +89,10 @@ module Rainbow
       args.fetch(:scale, 100)
     end
 
+    def scale_100?
+      scale == 100
+    end
+
     def save_as_png(path)
       create_canvas unless canvas
       canvas.save(path, :fast_rgba)
@@ -94,6 +108,7 @@ module Rainbow
         raise ArgumentError, 'args[:gradient][:color_ranges] cannot not be blank' if !color_ranges || color_ranges.size == 0
         raise ArgumentError, 'args[:gradient][:opacity_ranges] cannot not be blank' if !_opacity_ranges || _opacity_ranges.size == 0
         raise ArgumentError, 'args[:style] cannot not be blank' unless args[:style]
+        raise ArgumentError, 'args[:scale] must be between 10 and 150' if scale < 10 || scale > 150
       end
 
       def reverse!(canvas)
@@ -139,6 +154,7 @@ module Rainbow
       end
 
       def paint_body(canvas, color_range, x_coverred)
+
         color_range.width.times do |x|
           x += x_coverred
           color_range.current_x = x

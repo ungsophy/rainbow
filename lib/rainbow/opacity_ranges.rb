@@ -1,9 +1,9 @@
 module Rainbow
   class OpacityRanges
     extend Forwardable
+    def_delegators :@current_range, :tmp_current_x, :tmp_from, :tmp_to, :tmp_diff, :tmp_distance_in_pixel
 
     attr_reader :ranges, :gradient, :current_x
-    def_delegators :@current_range, :tmp_current_x, :tmp_from, :tmp_to, :tmp_diff, :tmp_distance_in_pixel
 
     def initialize(opacity_ranges, gradient)
       @ranges   = opacity_ranges
