@@ -107,8 +107,9 @@ module Rainbow
 
         raise ArgumentError, 'args[:gradient][:color_ranges] cannot not be blank' if !color_ranges || color_ranges.size == 0
         raise ArgumentError, 'args[:gradient][:opacity_ranges] cannot not be blank' if !_opacity_ranges || _opacity_ranges.size == 0
-        raise ArgumentError, 'args[:style] cannot not be blank' unless args[:style]
+        raise ArgumentError, 'args[:style] - Sorry, for now we support only linear gradient' if args[:style] != 'linear'
         raise ArgumentError, 'args[:scale] must be between 10 and 150' if scale < 10 || scale > 150
+        raise ArgumentError, 'Sorry, we support only two colors stop if scale is not 100' if scale != 100 && color_ranges.size != 1
       end
 
       def reverse!(canvas)
