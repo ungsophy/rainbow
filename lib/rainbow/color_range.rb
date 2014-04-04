@@ -19,7 +19,7 @@ module Rainbow
 
     def gradient=(gradient)
       @gradient = gradient
-      compute_variables
+      compute_variables!
     end
 
     def current_x=(x)
@@ -54,7 +54,7 @@ module Rainbow
         opacity < 0 ? 0 : opacity
       end
 
-      def compute_variables
+      def compute_variables!
         @mid_color = ChunkyPNG::Color(from_color.r + (to_color.r - from_color.r) / 2,
                                       from_color.g + (to_color.g - from_color.g) / 2,
                                       from_color.b + (to_color.b - from_color.b) / 2)

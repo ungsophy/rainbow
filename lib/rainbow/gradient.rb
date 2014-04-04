@@ -3,8 +3,10 @@ module Rainbow
 
     attr_reader :width, :height, :args, :style, :color_ranges, :opacity_ranges
     attr_reader :canvas
-    attr_reader :scale_start_location_in_pixel, :scale_mid_location_in_pixel, :scale_end_location_in_pixel,
-      :scale_half_distance_in_pixel
+    attr_reader :scale_start_location_in_pixel, :scale_mid_location_in_pixel,
+                :scale_end_location_in_pixel, :scale_half_distance_in_pixel
+
+    SUPPORTED_ANGLES = [0, 180]
 
     # wdith  - The gradient width
     # height - The gradient height
@@ -35,14 +37,7 @@ module Rainbow
       @opacity_ranges = OpacityRanges.new(args[:gradient][:opacity_ranges], self)
 
       assert_arguments!
-
-      scale_start = (100 - scale) / 2
-      scale_end   = scale_start == 0 ? 100 : scale_start + scale
-
-      @scale_start_location_in_pixel = scale_start * width / 100
-      @scale_end_location_in_pixel   = scale_end * width / 100
-      @scale_half_distance_in_pixel  = (@scale_end_location_in_pixel - @scale_start_location_in_pixel) / 2
-      @scale_mid_location_in_pixel   = @scale_start_location_in_pixel + @scale_half_distance_in_pixel
+      compute_scale_variables!
     end
 
     def create_canvas
@@ -50,7 +45,7 @@ module Rainbow
 
       paint_canvas!(@canvas)
       set_opacity!(@canvas) if opacity != 100
-      reverse!(@canvas) if reverse
+      reverse!(@canvas) if reverse || angle == 180
     end
 
     def blend_mode
@@ -82,7 +77,8 @@ module Rainbow
     end
 
     def angle
-      args.fetch(:angle, 0)
+      value = args.fetch(:angle, 0)
+      value % 360
     end
 
     def scale
@@ -110,6 +106,17 @@ module Rainbow
         raise ArgumentError, 'args[:style] - Sorry, for now we support only linear gradient' if args[:style] != 'linear'
         raise ArgumentError, 'args[:scale] must be between 10 and 150' if scale < 10 || scale > 150
         raise ArgumentError, 'Sorry, we support only two colors stop if scale is not 100' if scale != 100 && color_ranges.size != 1
+        raise ArgumentError, 'Sorry, we support only 0° or 180° angle' unless SUPPORTED_ANGLES.include?(angle)
+      end
+
+      def compute_scale_variables!
+        scale_start = (100 - scale) / 2
+        scale_end   = scale_start == 0 ? 100 : scale_start + scale
+
+        @scale_start_location_in_pixel = scale_start * width / 100
+        @scale_end_location_in_pixel   = scale_end * width / 100
+        @scale_half_distance_in_pixel  = (@scale_end_location_in_pixel - @scale_start_location_in_pixel) / 2
+        @scale_mid_location_in_pixel   = @scale_start_location_in_pixel + @scale_half_distance_in_pixel
       end
 
       def reverse!(canvas)
