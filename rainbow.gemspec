@@ -4,13 +4,13 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'rainbow/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'rainbow'
+  spec.name          = 'rainbow_gradient'
   spec.version       = Rainbow::VERSION
   spec.authors       = ['Sophy Eung']
   spec.email         = ['ungsophy@gmail.com']
   spec.summary       = %q{A Ruby library to generate gradient.}
   spec.description   = %q{A Ruby library to generate gradient.}
-  spec.homepage      = ''
+  spec.homepage      = 'https://github.com/ungsophy/rainbow'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
