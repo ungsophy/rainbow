@@ -46,6 +46,8 @@ module Rainbow
       paint_canvas!(@canvas)
       set_opacity!(@canvas) if opacity != 100
       reverse!(@canvas) if reverse || angle == 180
+
+      @canvas
     end
 
     def blend_mode
