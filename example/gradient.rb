@@ -2,10 +2,10 @@ require_relative '../lib/rainbow'
 require 'pp'
 
 first_color  = Rainbow::Color.new(ChunkyPNG::Color(255, 221, 23), 0)
-second_color = Rainbow::Color.new(ChunkyPNG::Color(255, 221, 23), 80)
+second_color = Rainbow::Color.new(ChunkyPNG::Color(255, 221, 23), 62)
 color_range1 = Rainbow::ColorRange.new(first_color, second_color, 50)
 
-third_color  = Rainbow::Color.new(ChunkyPNG::Color(255, 221, 23), 81)
+third_color  = Rainbow::Color.new(ChunkyPNG::Color(255, 221, 23), 63)
 color_range2 = Rainbow::ColorRange.new(second_color, third_color, 50)
 
 fouth_color  = Rainbow::Color.new(ChunkyPNG::Color(255, 221, 23), 100)
@@ -28,7 +28,7 @@ args = {
     opacity_ranges: [opacity_range]
   }
 }
-gradient = Rainbow::Gradient.new(195, 27, args)
+gradient = Rainbow::Gradient.new(196, 28, args)
 gradient.save_as_png(filename)
 
 `open #{filename}`

@@ -139,8 +139,11 @@ module Rainbow
       end
 
       def paint_canvas!(canvas)
-        x_coverred = 0
+        x_coverred           = 0
+        previous_color_range = nil
+
         color_ranges.each_with_index do |color_range, index|
+          color_range.previous       = previous_color_range
           color_range.gradient       = self
           color_range.opacity_ranges = opacity_ranges
 
@@ -151,6 +154,8 @@ module Rainbow
 
           # When the last color location is not 100
           x_coverred += paint_suffix(canvas, color_range, x_coverred) if index + 1 == color_ranges.size
+
+          previous_color_range = color_range if index != 0
         end
       end
 
@@ -164,9 +169,11 @@ module Rainbow
       end
 
       def paint_body(canvas, color_range, x_coverred)
-
         color_range.width.times do |x|
           x += x_coverred
+
+          break if x == width
+
           color_range.current_x = x
           height.times { |y| canvas[x, y] = color_range.current_color }
         end
