@@ -117,7 +117,7 @@ module Rainbow
 
         @scale_start_location_in_pixel = scale_start * width / 100
         @scale_end_location_in_pixel   = scale_end * width / 100
-        @scale_half_distance_in_pixel  = (@scale_end_location_in_pixel - @scale_start_location_in_pixel) / 2
+        @scale_half_distance_in_pixel  = (@scale_end_location_in_pixel - @scale_start_location_in_pixel) / 2.0
         @scale_mid_location_in_pixel   = @scale_start_location_in_pixel + @scale_half_distance_in_pixel
       end
 

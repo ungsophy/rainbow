@@ -59,15 +59,15 @@ module Rainbow
                                       from_color.g + (to_color.g - from_color.g) / 2,
                                       from_color.b + (to_color.b - from_color.b) / 2)
 
-        @width        = gradient.width * (to_color.location - from_color.location) / 100
-        @first_width  = @width * mid_point / 100
+        @width        = (gradient.width * (to_color.location - from_color.location) / 100.0).round
+        @first_width  = (@width * mid_point / 100.0).round
         @second_width = @width - @first_width
 
-        @from_location_in_pixel = from_color.location * gradient.width / 100
+        @from_location_in_pixel = (from_color.location * gradient.width / 100.0).round
         @mid_location_in_pixel  = @from_location_in_pixel + @first_width
         @to_location_in_pixel   = @from_location_in_pixel + @width
 
-        @leftover_width = (100 - to_color.location) * gradient.width / 100
+        @leftover_width = ((100 - to_color.location) * gradient.width / 100.0).round
       end
 
       def in_scale_range?
