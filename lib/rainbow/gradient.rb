@@ -169,8 +169,14 @@ module Rainbow
       end
 
       def paint_body(canvas, color_range, x_coverred)
+        n = 0
         color_range.width.times do |x|
-          x += x_coverred
+          if x == 0 && x + x_coverred != color_range.from_location_in_pixel
+            n = x + x_coverred - color_range.from_location_in_pixel
+          end
+
+          x += x_coverred - n
+          puts "  x: #{x}, n: #{n}" if ENV['RAINBOW_DEBUG']
 
           break if x == width
 
@@ -184,6 +190,9 @@ module Rainbow
       def paint_suffix(canvas, color_range, x_coverred)
         color_range.leftover_width.times do |x|
           x += x_coverred
+
+          break if x == width
+
           color_range.current_x = x
           height.times { |y| canvas[x, y] = color_range.current_color }
         end

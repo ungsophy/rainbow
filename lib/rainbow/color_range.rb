@@ -68,6 +68,13 @@ module Rainbow
         @mid_location_in_pixel  = @from_location_in_pixel + @first_width
         @to_location_in_pixel   = @from_location_in_pixel + @width
 
+        if ENV['CHOPSTICK_DEBUG']
+          puts "from: (#{from_color.location * gradient.width / 100.0}) #{@from_location_in_pixel}, " +
+               "to: #{@to_location_in_pixel}, " +
+               "width: (#{gradient.width * (to_color.location - from_color.location) / 100.0}) #{@width}"
+          puts '-' * 50
+        end
+
         @leftover_width = ((100 - to_color.location) * gradient.width / 100.0).ceil
       end
 
