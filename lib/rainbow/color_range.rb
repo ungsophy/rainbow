@@ -14,8 +14,8 @@ module Rainbow
       @to_color   = to_color
       @mid_point  = mid_point
 
-      @current_x = nil
-      @previous  = nil
+      @current_x  = nil
+      @previous   = nil
     end
 
     def gradient=(gradient)

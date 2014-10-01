@@ -144,8 +144,8 @@ module Rainbow
 
         color_ranges.each_with_index do |color_range, index|
           color_range.previous       = previous_color_range
-          color_range.gradient       = self
           color_range.opacity_ranges = opacity_ranges
+          color_range.gradient       = self
 
           # When the first color location is not 0
           x_coverred += paint_prefix(canvas, color_range, x_coverred) if index == 0

@@ -34,7 +34,9 @@ module Rainbow
         elsif last_range.to_opacity.location < 100 && x > last_range.to_location_in_pixel
           ranges.last
         else
-          raise "Cannot find current opacity range! .(#{first_range.from_location_in_pixel} - #{last_range.to_location_in_pixel}); (#{x})"
+          ranges.last
+          # err_msg = "(#{x}) (#{first_range.from_location_in_pixel} - #{last_range.to_location_in_pixel})"
+          # raise "Cannot find current opacity range! #{err_msg}"
         end
       end
   end
